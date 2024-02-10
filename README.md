@@ -18,3 +18,9 @@ This class represents a single "chunk" of data which is a collection of blocks o
   - Get Face Vertices: return the 4 vertices that correspond to the face we are passing in
   - Get Position In Direction: Get the Position of a block in a given direction, for instance if we have a block at (0,0,0) and we ask for the block above it, it will return (0,1,0)
   - Get Block Index: Convert the position of our block in 3D space to its index within a 1D array
+
+## Chunk World:
+this class represents our "world" which will generate all of the needed chunks.
+
+### Begin Play
+At the start of Game we will generate chunks starting at the origin and branching out DrawDistance chunks away forming a rectangle around the origin with corresponding chunks.
