@@ -25,6 +25,8 @@ AChunk::AChunk()
 
 	Mesh->SetCastShadow(false);
 
+	SetRootComponent(Mesh);
+
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +39,8 @@ void AChunk::BeginPlay()
 	GenerateMesh();
 
 	ApplyMesh();
+
+	UE_LOG(LogTemp, Warning, TEXT("Vertex Count : %d"), VertexCount); // ~20k per chunk
 	
 }
 
