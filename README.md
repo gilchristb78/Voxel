@@ -33,6 +33,7 @@ this class still represents a single chunk, but instead of every single fact of 
   > credit to https://gedge.ca/blog/2014-08-17-greedy-voxel-meshing/
 
 <br> then we simply set our values, 0 out the normals for the blocks in our greedy mesh, and create the quads <br>
+> note that our greedy meshing algorithm is not optimal as it always scales in the width first instead of considering both 
 <br>
 
   ### Remaining Functions
