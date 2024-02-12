@@ -73,7 +73,9 @@ This is where the bulk of the work is done. First we make a Vertex Mask by check
 - Get Interpolation Offset: when we want smoothed out rounded voxels in our world we use this function to round off the harsh edges.
 
 ### Results:
-//todo add map image
+![UE5 View of Marching Cube Result](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/Capture3DVoxelMarchingCube.PNG)
+note that this image is taken above the chunk and some faces are not drawn because in this algorithm it is expected another chunk would spawn above it, making those faces unnecessary.
+<br><br>
 This resulted in Vertex Counts of Roughly 16,000 per chunk however this is not comparable to previously algorithms as this implementation uses 3d Noise to generate its mesh, adding far more air and faces to draw. this produces a swiss cheese like map visible above. I definetly like this algorithm the best specifically with interpolation turned off. The problem I have is that the top of the chunk does not have a surface as the noise map is expecting another chunk to be spawned above the current one. I plan on eventually combining a couple of these approaches, first by implementing marching cubes with 2D noise then hopefully adding greedy meshing to this to again reduce the vertex count. after this is created it should create a slightly less than blocky surface world which I can further modify by adding other perlin noise maps to add infrequent mountains, biomes and just generally increase randomness. Then caves and different underground terrain can be added with far less frequency than here.
 
 <br><br><br>
