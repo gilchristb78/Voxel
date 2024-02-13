@@ -79,10 +79,31 @@ note that this image is taken above the chunk and some faces are not drawn becau
 This resulted in Vertex Counts of Roughly 16,000 per chunk however this is not comparable to previously algorithms as this implementation uses 3d Noise to generate its mesh, adding far more air and faces to draw. this produces a swiss cheese like map visible above. I definetly like this algorithm the best specifically with interpolation turned off. The problem I have is that the top of the chunk does not have a surface as the noise map is expecting another chunk to be spawned above the current one. I plan on eventually combining a couple of these approaches, first by implementing marching cubes with 2D noise then hopefully adding greedy meshing to this to again reduce the vertex count. after this is created it should create a slightly less than blocky surface world which I can further modify by adding other perlin noise maps to add infrequent mountains, biomes and just generally increase randomness. Then caves and different underground terrain can be added with far less frequency than here.
 
 
-### Continued Development:
+## Continued Development:
+In this section I will describe my changes to the algorithm after watching the tutorial. The remainder of this does not follow the tutorial and instead implements various features and such that I find Interesting.
+<br>
+### Marching Colors
 ![Marching Colors](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingColors.PNG)
 
 The Marching Cubes Algorithm has been updated to only generate a surface rather than a 3d cave world. This was done by simply changing our 3d perlin noise function to only accept 2 dimension (the X and Y) thus providing us one output per column of vertices, we then use this as a height map and set all vertices below this height to be "solid" (1)  and not generate any vertices above this point. This creates an interesting 3d world with unique terrain generations with the need for a cube based world. We also used a 3d perlin noise function to generate colors on top of the world. these colors are generated in 3d space so they seemlessly transition even on the strange terrain slopes. 
+
+### Marching Water
+
+My next task I wanted to implment was a "water" element to our development. In a game like minecraft this is fairly trivial as water is simply replacing all air blocks below a certain "sea level". I choose to take this same approach with some difficulty found regarding how the marching cubes interprets various voxel cubes compared to a traditional blocky algorithm. The first implementation worked decently well giving a seperate mesh for water and adding it mostly where we want with one exception. On the "shoreline" of our lakes and rives we ran into a problem, since the meshes are generated seperately the water level does not smoothly connect to the shore instead it tries to curve itself around making a sudo ball shape, this leads to a drop in waterlevel just before the ground as you can see in the below photo.
+
+![Marching Water Problem](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingWaterv1problem.PNG)
+
+As you can see the water goes down just before the shoreine due to how marching cubes handles edges of "blocks". <br> since it is expecting a smooth transition going down and not a water "edge" it will slope the water down expecting that to connect to the next spot of water. <br> To fix this I created a hack to generate the water as a flat surface regardless of the voxels. to do this I look at every time the marching cubes algorithms picks its voxels and if there are any voxels in the bottom of the cube I set every voxel on the bottom to water. <br> This mostly fixes the problem however adds a slightly new problem in that we are generating two mesh at the same spot sometimes, with the ground and the water fighting to both be visible as you can see below.
+
+![Marching Water Problem 2](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingWaterv1problem2.PNG)
+
+To Solve this I shifted the water down by an arbatraily small value, in this case .2 meters. this ensures the block meshes never line up with the water meshes and our problem is solved (mostly). I believe this creates a nice visual for the water and works good enough for now. Once we get into destroying blocks and placing blocks, some problems may arise but we will tackle those later down the line
+
+![Marching Water Solution](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingWaterv2.PNG)
+
+![Marching Water Solution First Person](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingWaterv2FP.PNG)
+
+> todo add a slight translucity to the water.
 
 
 ### Future Plans:
