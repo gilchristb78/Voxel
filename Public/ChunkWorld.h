@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = "Chunk")
 	TObjectPtr<UMaterialInterface> Material;
 
+	UPROPERTY(EditInstanceOnly, Category = "Chunk")
+	TObjectPtr<UMaterialInterface> MaterialWater;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -29,6 +29,7 @@ void AChunkWorld::BeginPlay()
 			);
 			const auto chunk = GetWorld()->SpawnActorDeferred<AChunkBase>(Chunk, transform, this);
 			chunk->Material = Material;
+			chunk->MaterialWater = MaterialWater;
 			UGameplayStatics::FinishSpawningActor(chunk, transform); 
 		}
 	}

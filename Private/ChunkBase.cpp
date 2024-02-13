@@ -56,7 +56,7 @@ void AChunkBase::ApplyMesh() const
 		MeshData.Colors,
 		TArray<FProcMeshTangent>(), true);
 
-	Mesh->SetMaterial(1, Material);
+	Mesh->SetMaterial(1, MaterialWater);
 	Mesh->CreateMeshSection(1, MeshDataTransparent.Vertices,
 		MeshDataTransparent.Triangles,
 		MeshDataTransparent.Normals,
