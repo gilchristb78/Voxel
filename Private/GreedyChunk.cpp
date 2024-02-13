@@ -15,7 +15,7 @@ AGreedyChunk::AGreedyChunk()
 
 	Mesh = CreateDefaultSubobject<UProceduralMeshComponent>("Mesh");
 	Noise = new FastNoiseLite();
-	Noise->SetFrequency(0.03f);
+	Noise->SetFrequency(0.015f);
 	Noise->SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	Noise->SetFractalType(FastNoiseLite::FractalType_FBm);
 

@@ -23,7 +23,10 @@ public:
 	int Size = 64;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunk")
-	float Frequency = 0.03f;
+	float Frequency = 0.01f;
+
+	TObjectPtr<UMaterialInterface> Material;
+
 
 protected:
 	// Called when the game starts or when spawned
