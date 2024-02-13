@@ -27,6 +27,8 @@ public:
 
 	TObjectPtr<UMaterialInterface> Material;
 
+	TObjectPtr<UMaterialInterface> MaterialWater;
+
 
 protected:
 	// Called when the game starts or when spawned
