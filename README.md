@@ -78,6 +78,20 @@ note that this image is taken above the chunk and some faces are not drawn becau
 <br><br>
 This resulted in Vertex Counts of Roughly 16,000 per chunk however this is not comparable to previously algorithms as this implementation uses 3d Noise to generate its mesh, adding far more air and faces to draw. this produces a swiss cheese like map visible above. I definetly like this algorithm the best specifically with interpolation turned off. The problem I have is that the top of the chunk does not have a surface as the noise map is expecting another chunk to be spawned above the current one. I plan on eventually combining a couple of these approaches, first by implementing marching cubes with 2D noise then hopefully adding greedy meshing to this to again reduce the vertex count. after this is created it should create a slightly less than blocky surface world which I can further modify by adding other perlin noise maps to add infrequent mountains, biomes and just generally increase randomness. Then caves and different underground terrain can be added with far less frequency than here.
 
+
+### Continued Development:
+![Marching Colors](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingColors.PNG)
+
+The Marching Cubes Algorithm has been updated to only generate a surface rather than a 3d cave world. This was done by simply changing our 3d perlin noise function to only accept 2 dimension (the X and Y) thus providing us one output per column of vertices, we then use this as a height map and set all vertices below this height to be "solid" (1)  and not generate any vertices above this point. This creates an interesting 3d world with unique terrain generations with the need for a cube based world. We also used a 3d perlin noise function to generate colors on top of the world. these colors are generated in 3d space so they seemlessly transition even on the strange terrain slopes. 
+
+
+### Future Plans:
+
+- Refactor the Marching cubes and Base chunk classes to simplify the code and add new features
+  -   When Generating the vertex positions, instead of just setting them as a float value that represents "is a block" or "isnt a block" we will instead create acustom "block" struct that stores various data and acts slightly differently.
+  -   Create a seperate block for water, which is set as any vertex below sea level but above the generated height mesh. <br> Then we will seperately "march" through these vertices and create a new group of MeshData allowing for a second section of Procedural Mesh Component to be generated and thus a second material to be used (one which is translucent)
+-   using the 3d perlin noise from our previouse work to add caves, setting any area with a significant Perlin score to air after the surface is generated. <br> This creates the "swiss cheese" effect of having pockets of air below the surface of the world or just poking through.
+-   Adding a snaking perlin noise we are able to connect caves together making interesting terrain. <br> This creates a "snaking" effect having ways to run between various cave systems.
 <br><br><br>
 
   > A big thank you to CodeBlaze on youtube for providing the tutorial to which I followed closely [Minecraft Like Voxel Terrain Generation by CodeBlaze](https://www.youtube.com/playlist?list=PLgji-9GMuqkK7EwUCVCuc2w3En1bPo5rA)
