@@ -24,7 +24,12 @@ void AMarchingChunk::GenerateHeightMap()
 
 			for (int z = 0; z < Height; ++z)
 			{
-				Voxels[GetVoxelIndex(x, y, z)] = 1.0f;
+				Voxels[GetVoxelIndex(x, y, z)] = EBlock::Stone;
+			}
+
+			for (int z = Height; z < SeaLevel; z++)
+			{
+				Voxels[GetVoxelIndex(x, y, z)] = EBlock::Water;
 			}
 
 			//Voxels[GetVoxelIndex(x, y, Height)] = Noise->GetNoise(x + Position.X, y + Position.Y);
@@ -55,7 +60,8 @@ void AMarchingChunk::GenerateMesh()
 		TriangleOrder[2] = 0;
 	}
 
-	float Cube[8];
+	float StoneCube[8];
+	float WaterCube[8];
 
 	for (int x = 0; x < Size; ++x)
 	{
@@ -65,16 +71,26 @@ void AMarchingChunk::GenerateMesh()
 			{
 				for (int i = 0; i < 8; ++i)
 				{
-					Cube[i] = Voxels[GetVoxelIndex(x + VertexOffset[i][0], y + VertexOffset[i][1], z + VertexOffset[i][2])];
+					EBlock boxVector = Voxels[GetVoxelIndex(x + VertexOffset[i][0], y + VertexOffset[i][1], z + VertexOffset[i][2])];
+					boxVector == EBlock::Stone ? StoneCube[i] = 1 : StoneCube[i] = 0;
+					boxVector == EBlock::Water ? WaterCube[i] = 1 : WaterCube[i] = 0;
+					//Cube[i] = Voxels[GetVoxelIndex(x + VertexOffset[i][0], y + VertexOffset[i][1], z + VertexOffset[i][2])];
 				}
-				March(x, y, z, Cube);
+
+				if (WaterCube[0] == 1 || WaterCube[1] == 1 || WaterCube[2] == 1 || WaterCube[3] == 1)
+				{
+					WaterCube[0] = 1; WaterCube[1] = 1; WaterCube[2] = 1; WaterCube[3] = 1;
+				}
+					
+				March(x, y, z, StoneCube, MeshData, VertexCountSolid);
+				March(x, y, z, WaterCube, MeshDataTransparent, VertexCountLiquid, true);
 			}
 		}
 	}
 
 }
 
-void AMarchingChunk::March(int X, int Y, int Z, const float Cube[8])
+void AMarchingChunk::March(int X, int Y, int Z, const float Cube[8], FChunkMeshData& data, int& VertexIncrementer, bool blue)
 {
 	int VertexMask = 0;
 	FVector EdgeVertex[12];
@@ -100,11 +116,16 @@ void AMarchingChunk::March(int X, int Y, int Z, const float Cube[8])
 			EdgeVertex[i].X = X + (VertexOffset[EdgeConnection[i][0]][0] + Offset * EdgeDirection[i][0]);
 			EdgeVertex[i].Y = Y + (VertexOffset[EdgeConnection[i][0]][1] + Offset * EdgeDirection[i][1]);
 			EdgeVertex[i].Z = Z + (VertexOffset[EdgeConnection[i][0]][2] + Offset * EdgeDirection[i][2]);
+			if (blue)
+			{
+				EdgeVertex[i].Z -= 0.2;
+			}
 		}
 	}
 
 	for (int i = 0; i < 5; ++i)
 	{
+		
 		//given the mask (where our vertices are) look for a corresponding triangle 
 		// (3*i as triangles have 3 vertices), if its not -1, a triangle should be drawn
 		if (TriangleConnectionTable[VertexMask][3 * i] < 0) break;
@@ -117,17 +138,17 @@ void AMarchingChunk::March(int X, int Y, int Z, const float Cube[8])
 		Normal.Normalize();
 
 
-		MeshData.Vertices.Add(V1);
-		MeshData.Vertices.Add(V2);
-		MeshData.Vertices.Add(V3);
+		data.Vertices.Add(V1);
+		data.Vertices.Add(V2);
+		data.Vertices.Add(V3);
 
-		MeshData.Triangles.Add(VertexCount + TriangleOrder[0]);
-		MeshData.Triangles.Add(VertexCount + TriangleOrder[1]);
-		MeshData.Triangles.Add(VertexCount + TriangleOrder[2]);
+		data.Triangles.Add(VertexIncrementer + TriangleOrder[0]);
+		data.Triangles.Add(VertexIncrementer + TriangleOrder[1]);
+		data.Triangles.Add(VertexIncrementer + TriangleOrder[2]);
 
-		MeshData.Normals.Add(Normal);
-		MeshData.Normals.Add(Normal);
-		MeshData.Normals.Add(Normal);
+		data.Normals.Add(Normal);
+		data.Normals.Add(Normal);
+		data.Normals.Add(Normal);
 
 		const float scale = 30;
 		const auto Position = GetActorLocation() / scale;
@@ -142,22 +163,28 @@ void AMarchingChunk::March(int X, int Y, int Z, const float Cube[8])
 		float col2 = Noise->GetNoise(V2.X / scale + Position.X, V2.Y / scale + Position.Y, V2.Z / scale + Position.Z) * 50;
 		float col3 = Noise->GetNoise(V3.X / scale + Position.X, V3.Y / scale + Position.Y, V3.Z / scale + Position.Z) * 50;
 
-		if (col1 + col2 + col3 > 0.0f)
+		if (blue)
 		{
-			MeshData.Colors.Add(FColor(100, 100, 100));
-			MeshData.Colors.Add(FColor(100, 100, 100));
-			MeshData.Colors.Add(FColor(100, 100, 100));
+			data.Colors.Add(FColor(50, 100, 200));
+			data.Colors.Add(FColor(50, 100, 200));
+			data.Colors.Add(FColor(50, 100, 200));
+		}
+		else if (col1 + col2 + col3 > 0.0f)
+		{
+			data.Colors.Add(FColor(100, 100, 100));
+			data.Colors.Add(FColor(100, 100, 100));
+			data.Colors.Add(FColor(100, 100, 100));
 		}
 		else {
-			MeshData.Colors.Add(FColor(200, 200, 150));
-			MeshData.Colors.Add(FColor(200, 200, 150));
-			MeshData.Colors.Add(FColor(200, 200, 150));
+			data.Colors.Add(FColor(200, 200, 150));
+			data.Colors.Add(FColor(200, 200, 150));
+			data.Colors.Add(FColor(200, 200, 150));
 		}
 
 		
 		
 
-		VertexCount += 3;
+		VertexIncrementer += 3;
 	}
 }
 

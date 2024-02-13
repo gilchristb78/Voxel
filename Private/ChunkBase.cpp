@@ -32,7 +32,8 @@ void AChunkBase::BeginPlay()
 
 	GenerateMesh();
 
-	UE_LOG(LogTemp, Warning, TEXT("Vertex Count: %d"), VertexCount);
+	UE_LOG(LogTemp, Warning, TEXT("Vertex Count: %d"), VertexCountSolid + VertexCountLiquid);
+	UE_LOG(LogTemp, Warning, TEXT("Liquid Count: %d"), VertexCountLiquid);
 
 	ApplyMesh();
 }
@@ -48,7 +49,20 @@ void AChunkBase::GenerateMesh()
 void AChunkBase::ApplyMesh() const
 {
 	Mesh->SetMaterial(0, Material);
-	Mesh->CreateMeshSection(0, MeshData.Vertices, MeshData.Triangles, MeshData.Normals, MeshData.UV0, MeshData.Colors, TArray<FProcMeshTangent>(), true);
+	Mesh->CreateMeshSection(0, MeshData.Vertices,
+		MeshData.Triangles,
+		MeshData.Normals,
+		MeshData.UV0,
+		MeshData.Colors,
+		TArray<FProcMeshTangent>(), true);
+
+	Mesh->SetMaterial(1, Material);
+	Mesh->CreateMeshSection(1, MeshDataTransparent.Vertices,
+		MeshDataTransparent.Triangles,
+		MeshDataTransparent.Normals,
+		MeshDataTransparent.UV0,
+		MeshDataTransparent.Colors,
+		TArray<FProcMeshTangent>(), false);
 }
 
 
