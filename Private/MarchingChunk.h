@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ChunkBase.h"
+#include "Enums.h"
 #include "MarchingChunk.generated.h"
 
 /**
@@ -22,6 +23,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Marching Cubes")
 	float SurfaceLevel = 0.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Marching Cubes")
+	float SeaLevel = 30.0f;
+
 	UPROPERTY(EditdefaultsOnly, Category = "Marching Cubes")
 	bool Interpolation = false;
 
@@ -33,11 +37,11 @@ protected:
 
 private:
 
-	TArray<float> Voxels;
+	TArray<EBlock> Voxels;
 
 	int TriangleOrder[3] = { 0, 1, 2 };
 
-	void March(int X, int Y, int Z, const float Cube[8]);
+	void March(int X, int Y, int Z, const float Cube[8], FChunkMeshData& data, int& VertexIncrementer, bool blue = false);
 
 	int GetVoxelIndex(int X, int Y, int Z) const;
 

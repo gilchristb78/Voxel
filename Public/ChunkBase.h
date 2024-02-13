@@ -39,7 +39,9 @@ protected:
 	TObjectPtr<UProceduralMeshComponent> Mesh;
 	FastNoiseLite* Noise;
 	FChunkMeshData MeshData;
-	int VertexCount = 0;
+	FChunkMeshData MeshDataTransparent;
+	int VertexCountSolid = 0;
+	int VertexCountLiquid = 0;
 
 private:
 	void ApplyMesh() const;

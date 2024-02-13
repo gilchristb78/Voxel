@@ -8,5 +8,5 @@ enum class EDirection
 
 enum class EBlock
 {
-	Null, Air, Stone, Dirt, Grass
+	Null, Air, Stone, Dirt, Grass, Water
 };
