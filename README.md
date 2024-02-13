@@ -103,7 +103,9 @@ To Solve this I shifted the water down by an arbatraily small value, in this cas
 
 ![Marching Water Solution First Person](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingWaterv2FP.PNG)
 
-> todo add a slight translucity to the water.
+Then finally we set a new material for water and have it be slightly translucent giving us our final result (note the material opacity is set to 0.8)
+
+![Marching Translucent Water](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/MarchingTranslucentWater.PNG)
 
 
 ### Future Plans:
