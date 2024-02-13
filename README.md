@@ -87,11 +87,13 @@ The Marching Cubes Algorithm has been updated to only generate a surface rather 
 
 ### Future Plans:
 
-- Refactor the Marching cubes and Base chunk classes to simplify the code and add new features
-  -   When Generating the vertex positions, instead of just setting them as a float value that represents "is a block" or "isnt a block" we will instead create acustom "block" struct that stores various data and acts slightly differently.
-  -   Create a seperate block for water, which is set as any vertex below sea level but above the generated height mesh. <br> Then we will seperately "march" through these vertices and create a new group of MeshData allowing for a second section of Procedural Mesh Component to be generated and thus a second material to be used (one which is translucent)
--   using the 3d perlin noise from our previouse work to add caves, setting any area with a significant Perlin score to air after the surface is generated. <br> This creates the "swiss cheese" effect of having pockets of air below the surface of the world or just poking through.
--   Adding a snaking perlin noise we are able to connect caves together making interesting terrain. <br> This creates a "snaking" effect having ways to run between various cave systems.
+- [ ]  Refactor the Marching cubes and Base chunk classes to simplify the code and add new features
+  - [X]   When Generating the vertex positions, instead of just setting them as a float value that represents "is a block" or "isnt a block" we will instead create acustom "block" struct that stores various data and acts slightly differently.
+  - [X]   Create a seperate block for water, which is set as any vertex below sea level but above the generated height mesh. <br> Then we will seperately "march" through these vertices and create a new group of MeshData allowing for a second section of Procedural Mesh Component to be generated and thus a second material to be used (one which is translucent)
+  - [ ]   Refactor the filse to clean up how different things are being generated, allowing for runtime modification (place / remove voxels).
+  - [ ]   fix the water bug that im skipping over for now
+- [ ]  using the 3d perlin noise from our previouse work to add caves, setting any area with a significant Perlin score to air after the surface is generated. <br> This creates the "swiss cheese" effect of having pockets of air below the surface of the world or just poking through.
+- [ ]  Adding a snaking perlin noise we are able to connect caves together making interesting terrain. <br> This creates a "snaking" effect having ways to run between various cave systems.
 <br><br><br>
 
   > A big thank you to CodeBlaze on youtube for providing the tutorial to which I followed closely [Minecraft Like Voxel Terrain Generation by CodeBlaze](https://www.youtube.com/playlist?list=PLgji-9GMuqkK7EwUCVCuc2w3En1bPo5rA)
