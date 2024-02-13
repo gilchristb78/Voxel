@@ -2,6 +2,8 @@
 
 
 #include "ChunkWorld.h"
+#include "ChunkBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AChunkWorld::AChunkWorld()
@@ -20,7 +22,14 @@ void AChunkWorld::BeginPlay()
 	{
 		for (int y = -DrawDistance; y <= DrawDistance; ++y)
 		{
-			GetWorld()->SpawnActor<AActor>(Chunk, FVector(x * ChunkSize * 100, y * ChunkSize * 100, 0), FRotator::ZeroRotator);
+			auto transform = FTransform(
+				FRotator::ZeroRotator,
+				FVector(x * ChunkSize * 100, y * ChunkSize * 100, 0),
+				FVector::OneVector
+			);
+			const auto chunk = GetWorld()->SpawnActorDeferred<AChunkBase>(Chunk, transform, this);
+			chunk->Material = Material;
+			UGameplayStatics::FinishSpawningActor(chunk, transform); 
 		}
 	}
 	

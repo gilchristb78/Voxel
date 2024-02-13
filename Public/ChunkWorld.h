@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Chunk World")
 	int ChunkSize = 32;
 
+	UPROPERTY(EditInstanceOnly, Category = "Chunk")
+	TObjectPtr<UMaterialInterface> Material;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

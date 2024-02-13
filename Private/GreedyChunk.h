@@ -29,7 +29,7 @@ public:
 	AGreedyChunk();
 
 	UPROPERTY(EditAnywhere, Category = "Chunk")
-	FIntVector Size = FIntVector(1, 1, 1) * 32;
+	FIntVector Size = FIntVector(2, 2, 2) * 32;
 
 protected:
 	// Called when the game starts or when spawned
