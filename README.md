@@ -126,8 +126,17 @@ This task was to implement "digging" or the ability to remove voxels and regener
 - [ ]  Refactor the Marching cubes and Base chunk classes to simplify the code and add new features
   - [X]   When Generating the vertex positions, instead of just setting them as a float value that represents "is a block" or "isnt a block" we will instead create acustom "block" struct that stores various data and acts slightly differently.
   - [X]   Create a seperate block for water, which is set as any vertex below sea level but above the generated height mesh. <br> Then we will seperately "march" through these vertices and create a new group of MeshData allowing for a second section of Procedural Mesh Component to be generated and thus a second material to be used (one which is translucent)
-  - [ ]   Refactor the filse to clean up how different things are being generated, allowing for runtime modification (place / remove voxels).
-  - [ ]   fix the water bug that im skipping over for now
+  - [ ]   Refactor the filse to clean up how different things are being generated, allowing for runtime modification (place / remove voxels)
+    - [ ]   Place
+    - [X]   Remove
+    - [ ]   Optimize adding / removing blocks
+      - [ ] put the mesh generation on a seperate thread (multithreading)
+      - [ ] possibly splitup the meshes into section so you only regenerate a section of the mesh.
+      - [ ] Digging holes at the edge of chunks causes "holes"
+        - [ ] Keep a dictionary or other variable for all chunks so we can lookup neighbors
+- [ ] Make the different blocks actuall do something
+- [ ] fix the water bug that im skipping over for now
+- [ ]  Mas between Different perlin noise values to create biomes / large mountain / flatlands
 - [ ]  using the 3d perlin noise from our previouse work to add caves, setting any area with a significant Perlin score to air after the surface is generated. <br> This creates the "swiss cheese" effect of having pockets of air below the surface of the world or just poking through.
 - [ ]  Adding a snaking perlin noise we are able to connect caves together making interesting terrain. <br> This creates a "snaking" effect having ways to run between various cave systems.
 <br><br><br>
