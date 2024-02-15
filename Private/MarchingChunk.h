@@ -47,6 +47,12 @@ private:
 
 	float GetInterpolationOffset(float V1, float V2) const;
 
+	UFUNCTION(BlueprintCallable, Category = "Marching cubes")
+	FString GetBlockAt(FIntVector localPos);
+
+	UFUNCTION(BlueprintCallable, Category = "Marching cubes")
+	void SetBlockAtToAir(FIntVector localPos);
+
 	const int VertexOffset[8][3] = {  //8 vertex positions of a cube
 		{0, 0, 0}, {1, 0, 0}, {1, 1, 0}, {0, 1, 0},
 		{0, 0, 1}, {1, 0, 1}, {1, 1, 1}, {0, 1, 1}

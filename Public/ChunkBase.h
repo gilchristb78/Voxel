@@ -45,6 +45,8 @@ protected:
 	int VertexCountSolid = 0;
 	int VertexCountLiquid = 0;
 
-private:
 	void ApplyMesh() const;
+
+private:
+	
 };
