@@ -3,6 +3,7 @@
 
 #include "MarchingChunk.h"
 #include "FastNoiseLite.h"
+#include "UObject/Class.h"
 
 AMarchingChunk::AMarchingChunk()
 {
@@ -32,6 +33,7 @@ void AMarchingChunk::GenerateHeightMap()
 				Voxels[GetVoxelIndex(x, y, z)] = EBlock::Water;
 			}
 
+
 			//Voxels[GetVoxelIndex(x, y, Height)] = Noise->GetNoise(x + Position.X, y + Position.Y);
 			//Voxels[GetVoxelIndex(x, y, Height + 1)] = Noise->GetNoise(x + Position.X, y + Position.Y);
 
@@ -47,6 +49,11 @@ void AMarchingChunk::GenerateHeightMap()
 
 void AMarchingChunk::GenerateMesh()
 {
+	VertexCountLiquid = 0;
+	VertexCountSolid = 0;
+	MeshData = FChunkMeshData();
+	MeshDataTransparent = FChunkMeshData();
+
 	if (SurfaceLevel > 0.0f) //triangles face correct direction based on surface level
 	{
 		TriangleOrder[0] = 0;
@@ -198,3 +205,61 @@ float AMarchingChunk::GetInterpolationOffset(float V1, float V2) const
 	const float Delta = V2 - V1;
 	return Delta == 0.0f ? SurfaceLevel : (SurfaceLevel - V1) / Delta;
 }
+
+FString AMarchingChunk::GetBlockAt(FIntVector localPos)
+{
+	int x = localPos.X;
+	int y = localPos.Y;
+	int z = localPos.Z;
+
+	EBlock block = Voxels[GetVoxelIndex(x, y, z)];
+
+	switch (block)
+	{
+	case EBlock::Air:
+		return "Air";
+		break;
+	case EBlock::Stone:
+		return "Stone";
+		break;
+	case EBlock::Dirt:
+		return "Dirt";
+		break;
+	case EBlock::Grass:
+		return "Grass";
+		break;
+	case EBlock::Water:
+		return "Water";
+		break;
+	default:
+		return "Null";
+		break;
+	}
+
+
+
+	
+}
+
+void AMarchingChunk::SetBlockAtToAir(FIntVector localPos)
+{
+	localPos /= 100;
+
+	for (int x = localPos.X - 1; x <= localPos.X + 1; x++)
+	{
+		for (int y = localPos.Y - 1; y <= localPos.Y + 1; y++)
+		{
+			for (int z = localPos.Z - 1; z <= localPos.Z + 1; z++)
+			{
+				Voxels[GetVoxelIndex(x, y, z)] = EBlock::Air;
+			}
+		}
+	}
+
+
+	GenerateMesh();
+
+	ApplyMesh();
+
+}
+
