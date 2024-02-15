@@ -134,6 +134,7 @@ This task was to implement "digging" or the ability to remove voxels and regener
       - [ ] possibly splitup the meshes into section so you only regenerate a section of the mesh.
       - [ ] Digging holes at the edge of chunks causes "holes"
         - [ ] Keep a dictionary or other variable for all chunks so we can lookup neighbors
+          - [ ] if our 3x3x3 array of voxels extends outside our chunk, we need to remove from that chunk
 - [ ] Make the different blocks actuall do something
 - [ ] fix the water bug that im skipping over for now
 - [ ]  Mas between Different perlin noise values to create biomes / large mountain / flatlands
