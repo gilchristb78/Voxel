@@ -107,6 +107,19 @@ Then finally we set a new material for water and have it be slightly translucent
 
 ![Marching Translucent Water](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/MarchingTranslucentWater.PNG)
 
+### Marching Dig
+
+This task was to implement "digging" or the ability to remove voxels and regenerate the mesh. <br> To do this we made a simple function that Sets the blocks to air, regenerates the mesh, and applys the mesh. <br> We then simply create a line trace from the camera of the player out an arbitrary amount of blocks and if we hit an actor (one of our meshes) we call that function.<br> One thing that must be added is that this function doesnt check if you hit something, I should use bhitresult to ensure we hit something and then check if the hit is a chunk, although casting to marching chunk should work but could have edge cases not considered <br> We must also make sure to reset any values that are modified during mesh generation, in this case the data and the vertex count. after doing this the single voxel removal didnt work great so I remove a 3x3x3 spot of voxels around the hit location and it worked much better. <br> something else to note is that the hit function does not work perfectly and sometimes a voxel is not properly hit, this results in a smaller hole being dug sometimes, but this is fine visually in the game. <br> the biggest problem i encountered is the border of chunks, when you dig up the border of chunks it does not update the chunk next to it, and thus you can see through the map. <br> I must find a way to update neighboring chunks before this feature is complete. <br> a following problem a did not encounter but know exists is trying to dig up the voxel on the edge of the chunk, this could lead to it trying to dig a 3x3x3 array of voxels which extends outside the chunk and thus outside our array causing an error. <br>  for now this feature works okay and more work will need to be done. <br>
+
+
+![Marching Cubes Digging](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingDig.PNG)
+
+> this photo shows the digging working properly under ideal conditions.
+
+![Marching Cubes Digging Problem](https://github.com/gilchristb78/Voxel/blob/main/ReadmeImages/CaptureMarchingDigProblem.PNG)
+
+> this screenshot shows the problem described earlier
+
 
 ### Future Plans:
 
